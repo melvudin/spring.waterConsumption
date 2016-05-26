@@ -1,0 +1,14 @@
+com\wsm\model\DeviceType.class
+com\wsm\model\Household.class
+com\wsm\model\MeterReading.class
+com\wsm\model\User.class
+com\wsm\model\SmartMeter.class
+com\wsm\model\ConsumerSegment.class
+com\wsm\model\District.class
+com\wsm\model\ComplexDeviceInstance.class
+com\wsm\model\NeutralUser.class
+com\awt\wsm\HomeController.class
+com\wsm\model\SimpleDeviceInstance.class
+com\wsm\model\DeviceConsumption.class
+com\wsm\model\Module.class
+com\wsm\model\Building.class
