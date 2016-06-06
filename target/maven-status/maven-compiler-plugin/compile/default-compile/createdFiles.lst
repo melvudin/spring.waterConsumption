@@ -1,4 +1,6 @@
 com\wsm\model\DeviceType.class
+com\wsm\config\WaterSmartMeterConfiguration.class
+com\wsm\controllers\LoginController.class
 com\wsm\model\Household.class
 com\wsm\model\MeterReading.class
 com\wsm\model\User.class
@@ -7,8 +9,11 @@ com\wsm\model\ConsumerSegment.class
 com\wsm\model\District.class
 com\wsm\model\ComplexDeviceInstance.class
 com\wsm\model\NeutralUser.class
-com\awt\wsm\HomeController.class
 com\wsm\model\SimpleDeviceInstance.class
 com\wsm\model\DeviceConsumption.class
+com\wsm\config\WaterSmartMeterInitializer.class
 com\wsm\model\Module.class
+com\wsm\service\LoginService.class
+com\wsm\service\HibernateService.class
+com\wsm\config\CORSFilter.class
 com\wsm\model\Building.class

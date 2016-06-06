@@ -9,5 +9,18 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/watermeter</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <mapping class="com.wsm.model.Building"/>
+        <mapping class="com.wsm.model.ComplexDeviceInstance"/>
+        <mapping class="com.wsm.model.ConsumerSegment"/>
+        <mapping class="com.wsm.model.DeviceConsumption"/>
+        <mapping class="com.wsm.model.DeviceType"/>
+        <mapping class="com.wsm.model.District"/>
+        <mapping class="com.wsm.model.Household"/>
+        <mapping class="com.wsm.model.MeterReading"/>
+        <mapping class="com.wsm.model.Module"/>
+        <mapping class="com.wsm.model.NeutralUser"/>
+        <mapping class="com.wsm.model.SimpleDeviceInstance"/>
+        <mapping class="com.wsm.model.SmartMeter"/>
+        <mapping class="com.wsm.model.User"/>
     </session-factory>
 </hibernate-configuration>
