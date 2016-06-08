@@ -63,7 +63,7 @@
 		crossorigin="anonymous"></script>
 	<script type="text/javascript" src="resources/js/login.js"></script>
 	<script type="text/javascript">
-	jQuery(document).ready(function($) {	
+	jQuery(document).ready(function($) {
 		$("#login-form").submit(function(event) {
 				
 				console.log("Hello");

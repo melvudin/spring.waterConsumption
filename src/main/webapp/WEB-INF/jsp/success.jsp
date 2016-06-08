@@ -8,16 +8,44 @@
 </head>
 <body>
 
-	<%
-		String name = (String) request.getAttribute("name");
-		if (name != null) {
-	%>
-	<h1>
-	Succesfull login<a href="home.jsp">Redirecting</a>
-		<%=name%>
-	</h1>
-	<%
-		}
-	%>
-</body>
+	<form id="logout-form">
+								
+								<button type="submit" id="bth-search"
+									class="btn btn-primary btn-lg">
+									<b>Logout</b>
+								</button>
+							</form>
+
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript" src="resources/js/login.js"></script>
+	<script type="text/javascript">
+
+	jQuery(document).ready(function($) {
+		$("#logout-form").submit(function(event) {
+				
+			
+				$.ajax({
+					type : "POST",
+					contentType : "application/json;charset=UTF-8",
+					url : "logout/",
+					dataType: 'json',
+					success:function(response) { 
+					var url = "<%=request.getContextPath()%>/" ;
+					window.location.replace(url); },
+					error: function(response) {
+					var url = "<%=request.getContextPath()%>/error";
+						window.location.replace(url);
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+	
+	</body>
 </html>
