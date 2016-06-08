@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.ietf.jgss.Oid;
 import org.springframework.stereotype.Service;
 
 import com.wsm.model.User;
@@ -18,7 +19,7 @@ import com.wsm.model.User;
 @Service("loginService")
 public class LoginService {
 
-	public String getLoginId(User user) throws HibernateException {
+	public int getLoginId(User user) throws HibernateException {
 		String response = "";
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 	    Session session = sessionFactory.openSession();
@@ -33,16 +34,10 @@ public class LoginService {
 			oid=(int)object;
 			System.out.print("Result objects: " + object);
 		}
-		if(oid!=0)
-		{
-			response="success";
-		}
-		else {
-			response="failed";
-		}
+		
 		session.getTransaction().commit();
 		session.close();
-
-		return response;
+		
+		return oid;
 	}
 }

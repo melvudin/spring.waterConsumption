@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
+import java.util.Map;
+import java.util.HashMap;
 import com.wsm.model.User;
 import com.wsm.service.LoginService;
 
@@ -20,50 +22,70 @@ public class LoginController {
 	/*
 	 * public void LoginServiceConstructor() { }
 	 */
-	@Autowired 
+	@Autowired
 	LoginService loginService;
 
-	@RequestMapping(value = "/")
+	/*@RequestMapping(value = "/")
 	public ModelAndView login() {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("login");
 		return view;
-	}
+	}*/
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String printWelcome(ModelMap model) {
+		return "login";
+	}
+	
+	@RequestMapping(value = "/success", method = RequestMethod.GET)
+	public String success(ModelMap model) {
+		return "success";
+	}
+	
+	@RequestMapping(value = "/error", method = RequestMethod.GET)
+	public String error(ModelMap model) {
+		return "error";
+	}
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public ResponseEntity<Object> getUser(@RequestBody User user) {
 
 		System.out.println("Fetching User with id " + user.getUsername());
-		String result=loginService.getLoginId(user);
-		if (result.equals("success")){
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		}else{
-			return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
+		int result = loginService.getLoginId(user);
+		Map<String, Object> oidMap = new HashMap<String, Object>();
+		
+		
+		
+		if (!Integer.toString(result).equals("0")) {
+			oidMap.put("result", Integer.toString(result));
+			System.out.println(oidMap);
+			return new ResponseEntity<>(oidMap, HttpStatus.OK);
+		} else{
+			oidMap.put("result", "failed");
+			System.out.println(oidMap);
+		return new ResponseEntity<>(oidMap, HttpStatus.FORBIDDEN);
 		}
-
-	
-
-	// processRequest(User request)
-	// throws IOException, ServletException {
-	// System.out.println(request.getUsername());
-	//
-	// Map<String,Object> entities = new HashMap<String,Object>();
-	//
-	// /*String name = request.getParameter("txtUserName");
-	// String password = request.getParameter("txtUserPassword");
-	// if (name.equalsIgnoreCase("kaka")&& password.equalsIgnoreCase("kaka")) {
-	// RequestDispatcher rd = request.getRequestDispatcher("success.jsp");
-	// request.setAttribute("name", name);
-	// request.setAttribute("password", password);
-	// rd.forward(request, response);
-	// } else {
-	// response.sendRedirect("error.jsp");
-	// }*/
-	// return new ResponseEntity<Object>(entities, HttpStatus.OK);
+	}
 }
-}
-
+// processRequest(User request)
+// throws IOException, ServletException {
+// System.out.println(request.getUsername());
+//
+// Map<String,Object> entities = new HashMap<String,Object>();
+//
+// /*String name = request.getParameter("txtUserName");
+// String password = request.getParameter("txtUserPassword");
+// if (name.equalsIgnoreCase("kaka")&& password.equalsIgnoreCase("kaka")) {
+// RequestDispatcher rd = request.getRequestDispatcher("success.jsp");
+// request.setAttribute("name", name);
+// request.setAttribute("password", password);
+// rd.forward(request, response);
+// } else {
+// response.sendRedirect("error.jsp");
+// }*/
+// return new ResponseEntity<Object>(entities, HttpStatus.OK);
 /*
  * protected void doGet(HttpServletRequest request, HttpServletResponse
  * response) throws ServletException, IOException { processRequest(request,

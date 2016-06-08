@@ -15,5 +15,4 @@ com\wsm\config\WaterSmartMeterInitializer.class
 com\wsm\model\Module.class
 com\wsm\service\LoginService.class
 com\wsm\service\HibernateService.class
-com\wsm\config\CORSFilter.class
 com\wsm\model\Building.class
