@@ -78,14 +78,14 @@
 					type : "POST",
 					contentType : "application/json;charset=UTF-8",
 					url : "login/",
-					data : JSON.stringify( data),
+					data : JSON.stringify(data),
 					dataType: 'json',
 					success:function(response) { 
 					var url = "<%=request.getContextPath()%>/success" ;
 					window.location.replace(url); },
 					error: function(response) {
-					var url = "<%=request.getContextPath()%>/error";
-						window.location.replace(url);
+					<%-- var url = "<%=request.getContextPath()%>/error";
+						window.location.replace(url); --%>
 					}
 				});
 				return false;
