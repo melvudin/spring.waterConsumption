@@ -69,10 +69,9 @@
 				console.log("Hello");
 				
 				var username = document.getElementById("username").value;
-				var password = document.getElementById("password").value;
-				
-				
+				var password = document.getElementById("password").value;		
 				var data = { username : username, password : password};
+				
 				console.log(data);
 				$.ajax({
 					type : "POST",

@@ -16,7 +16,7 @@
 			<b>Logout</b>
 		</button>
 	</form>
-<div id="container" style="height: 400px"></div>
+	<div id="container" style="height: 400px"></div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script
@@ -30,7 +30,7 @@
 	<script type="text/javascript">
 
 	jQuery(document).ready(function($) {
-		console.log(${sessionScope.oid});
+		//console.log(${sessionScope.oid});
 		var useroid=${sessionScope.oid};
 		var json= {oid:useroid};
 		console.log(json);
@@ -44,6 +44,7 @@
 				var resultData=response.result;
 				
 				var chartData=[];
+				var readingData=[];
 				for(i in resultData){
 					var dateTime=resultData[i].readingTimeStamp;
 					var value=resultData[i].totalConsumption;
@@ -51,8 +52,50 @@
 					chartData.push(item);
 					
 				}
-				
 				chartData.sort();
+				
+				var dailyConsumption=0;
+				var j=1;
+				var dataSize=chartData.length-1;
+				
+				for (var i in chartData) {
+					
+					
+					if(j<=dataSize){
+						
+					var readingTimeStamp = new Date(chartData[i][0]);
+					var readingTimeStampString = readingTimeStamp.toDateString();
+					
+					var nextReadingTimeStamp = new Date(chartData[j][0]);
+					var nextReadingTimeStampString = nextReadingTimeStamp.toDateString();
+					
+					
+					
+					if(readingTimeStampString===nextReadingTimeStampString){
+						
+					dailyConsumption=dailyConsumption+(chartData[j][1]-chartData[i][1]);
+					
+					}
+					
+					if(readingTimeStampString!==nextReadingTimeStampString){
+						
+						var dateTime=chartData[i][0];
+						var value=dailyConsumption;
+						var item=[dateTime,value];
+						readingData.push(item);						
+						dailyConsumption=0;
+						
+					}
+					
+					j++;
+					}
+				
+					
+				}
+				
+				readingData.sort();
+				
+				
 				
 				 $('#container').highcharts('StockChart', {
 			            chart: {
@@ -70,7 +113,7 @@
 			            series: [{
 			                type: 'column',
 			                name: 'Water Smartmeter',
-			                data: chartData,
+			                data: readingData,
 			                turboThreshold: 50000,
 			                dataGrouping: {
 			                    units: [[
@@ -89,14 +132,8 @@
 				window.location.replace(url); --%>
 			}
 		});
-		
-		
-		
-		
-		
+
 		$("#logout-form").submit(function(event) {
-				
-			
 				$.ajax({
 					type : "POST",
 					contentType : "application/json;charset=UTF-8",

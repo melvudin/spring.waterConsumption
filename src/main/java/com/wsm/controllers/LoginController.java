@@ -29,69 +29,63 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
-	/*@RequestMapping(value = "/")
-	public ModelAndView login() {
-		ModelAndView view = new ModelAndView();
-		view.setViewName("login");
-		return view;
-	}*/
+	/*
+	 * @RequestMapping(value = "/") public ModelAndView login() { ModelAndView
+	 * view = new ModelAndView(); view.setViewName("login"); return view; }
+	 */
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String printWelcome(ModelMap model, HttpSession sessionObj) {
-		
-		if(sessionObj.getAttribute("oid")!=null){
+
+		if (sessionObj.getAttribute("oid") != null) {
 			return "success";
-		}else{
+		} else {
 			return "login";
 		}
-		
-		
+
 	}
-	
+
 	@RequestMapping(value = "/success", method = RequestMethod.GET)
-	public String success(ModelMap model,HttpSession sessionObj) {
-		
-		if(sessionObj.getAttribute("oid")!=null){
+	public String success(ModelMap model, HttpSession sessionObj) {
+
+		if (sessionObj.getAttribute("oid") != null) {
 			return "success";
-		}else{
+		} else {
 			return "login";
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public  ResponseEntity<Object> logout(ModelMap model,HttpSession sessionObj) {
+	public ResponseEntity<Object> logout(ModelMap model, HttpSession sessionObj) {
 		Map<String, Object> oidMap = new HashMap<String, Object>();
-		sessionObj.setAttribute("oid",null);
-		
+		sessionObj.setAttribute("oid", null);
+
 		return new ResponseEntity<>(oidMap, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/error", method = RequestMethod.GET)
 	public String error(ModelMap model) {
 		return "error";
 	}
-	
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public ResponseEntity<Object> getUser(@RequestBody User user,HttpSession sessionObj) {
+	public ResponseEntity<Object> getUser(@RequestBody User user, HttpSession sessionObj) {
 
 		System.out.println("Fetching User with id " + user.getUsername());
 		int result = loginService.getLoginId(user);
 		Map<String, Object> oidMap = new HashMap<String, Object>();
-		
-		
-		
+
 		if (!Integer.toString(result).equals("0")) {
-			sessionObj.setAttribute("oid" , Integer.toString(result));
+			sessionObj.setAttribute("oid", Integer.toString(result));
 			oidMap.put("result", Integer.toString(result));
 			System.out.println(oidMap);
 			return new ResponseEntity<>(oidMap, HttpStatus.OK);
-		} else{
+		} else {
 			oidMap.put("result", "failed");
 			System.out.println(oidMap);
-		return new ResponseEntity<>(oidMap, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(oidMap, HttpStatus.FORBIDDEN);
 		}
 	}
 }
