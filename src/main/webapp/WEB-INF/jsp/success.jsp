@@ -16,9 +16,13 @@
 			<b>Logout</b>
 		</button>
 	</form>
-	<div id="container" style="height: 400px"></div>
+	<div id="container" style="height: 400px; background-color:#ffffff"></div>
+	
+	<div id="p" style="background-color:#ffffff">
+	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
@@ -26,10 +30,49 @@
 	<script type="text/javascript" src="resources/js/login.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript">
 
 	jQuery(document).ready(function($) {
+		
+		var showAlert = function(date,timestamp, value) {
+			
+				
+			var readingDate=new Date(date);
+			var popuphtml = 'Day Usage <br>';
+			var readingDateString=readingDate.toDateString();
+			popuphtml=popuphtml.concat('<ul>');
+			for (var i in chartData) {
+				var datesfromreading=new Date(chartData[i][0]);
+				
+				
+				var checkdate=datesfromreading.toDateString();
+				
+				if(readingDateString===checkdate){
+					
+					var hours = datesfromreading.getHours();
+					var minutes = "0" + datesfromreading.getMinutes();
+					var seconds = "0" + datesfromreading.getSeconds();
+					popuphtml=popuphtml.concat('<li>'+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+' - '+chartData[i][1]+'</li>');
+				}
+			}
+			popuphtml=popuphtml.concat('</ul>');
+			
+			$("#p").dialog({
+				  height: 400
+			}); 
+	        $("#p").html(popuphtml);
+	        
+		};
+		
+		
+		
+		
+		
+		var chartData=[];
+		var readingData=[];
+		
+		
 		//console.log(${sessionScope.oid});
 		var useroid=${sessionScope.oid};
 		var json= {oid:useroid};
@@ -43,8 +86,7 @@
 			success:function(response) { 
 				var resultData=response.result;
 				
-				var chartData=[];
-				var readingData=[];
+				
 				for(i in resultData){
 					var dateTime=resultData[i].readingTimeStamp;
 					var value=resultData[i].totalConsumption;
@@ -69,7 +111,7 @@
 					var nextReadingTimeStamp = new Date(chartData[j][0]);
 					var nextReadingTimeStampString = nextReadingTimeStamp.toDateString();
 					
-					
+					 
 					
 					if(readingTimeStampString===nextReadingTimeStampString){
 						
@@ -123,6 +165,15 @@
 			                        'month',
 			                        [1, 2, 3, 4, 6]
 			                    ]]
+			                },
+			                point: {
+			                    events: {
+			                        click: function () {
+			                        	
+			                        	showAlert(this.x,this.series.processedXData,this.series.processedYData);
+			                           
+			                        }
+			                    }
 			                }
 			            }]
 			        });			
