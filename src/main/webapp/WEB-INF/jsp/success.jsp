@@ -16,10 +16,16 @@
 			<b>Logout</b>
 		</button>
 	</form>
-	<div id="container" style="height: 400px; background-color:#ffffff"></div>
-	
-	<div id="p" style="background-color:#ffffff">
-	</div>
+	<div align="right">
+	<select id="selectBox">
+   <option value="1">Days</option>
+   <option value="2">Weeks</option>
+   <option value="3">Months</option>
+  </select>
+  </div>
+	<div id="container" style="height: 400px; background-color: #ffffff"></div>
+
+	<div id="p" style="background-color: #ffffff"></div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -30,10 +36,46 @@
 	<script type="text/javascript" src="resources/js/login.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript">
 
 	jQuery(document).ready(function($) {
+		
+		$("#selectBox").on('change',  function() {
+			
+			var chart = $('#container').highcharts();
+			
+		    var selectBox = document.getElementById("selectBox");
+		    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+		
+		   
+		    if(selectedValue==="1"){
+		    	chart.series[0].update({ dataGrouping: {
+		    		forced: true,
+	                units: [ ['day', [1] ] ]
+	            } });
+		    	
+				
+			}
+			
+			if(selectedValue==="2"){
+				chart.series[0].update({ dataGrouping: {
+					forced: true,
+	                units: [ ['week', [1] ] ]
+	            } });
+				
+			}
+			
+			if(selectedValue==="3"){
+				chart.series[0].update({ dataGrouping: {
+					forced: true,
+	                units: [ ['month', [1] ] ]
+	            } });
+				
+			}
+		    
+		});
+
 		
 		var showAlert = function(date,timestamp, value) {
 			
@@ -44,8 +86,6 @@
 			popuphtml=popuphtml.concat('<ul>');
 			for (var i in chartData) {
 				var datesfromreading=new Date(chartData[i][0]);
-				
-				
 				var checkdate=datesfromreading.toDateString();
 				
 				if(readingDateString===checkdate){
@@ -65,14 +105,8 @@
 	        
 		};
 		
-		
-		
-		
-		
 		var chartData=[];
 		var readingData=[];
-		
-		
 		//console.log(${sessionScope.oid});
 		var useroid=${sessionScope.oid};
 		var json= {oid:useroid};
@@ -85,8 +119,7 @@
 			dataType: 'json',
 			success:function(response) { 
 				var resultData=response.result;
-				
-				
+
 				for(i in resultData){
 					var dateTime=resultData[i].readingTimeStamp;
 					var value=resultData[i].totalConsumption;
@@ -114,44 +147,32 @@
 					 
 					
 					if(readingTimeStampString===nextReadingTimeStampString){
-						
 					dailyConsumption=dailyConsumption+(chartData[j][1]-chartData[i][1]);
-					
 					}
 					
 					if(readingTimeStampString!==nextReadingTimeStampString){
-						
 						var dateTime=chartData[i][0];
 						var value=dailyConsumption;
 						var item=[dateTime,value];
 						readingData.push(item);						
 						dailyConsumption=0;
-						
 					}
-					
 					j++;
 					}
-				
-					
 				}
 				
 				readingData.sort();
-				
-				
-				
+
 				 $('#container').highcharts('StockChart', {
 			            chart: {
 			                alignTicks: false
 			            },
-
 			            rangeSelector: {
 			                selected: 1
 			            },
-
 			            title: {
 			                text: 'Water Smartmeter'
 			            },
-
 			            series: [{
 			                type: 'column',
 			                name: 'Water Smartmeter',
@@ -171,7 +192,6 @@
 			                        click: function () {
 			                        	
 			                        	showAlert(this.x,this.series.processedXData,this.series.processedYData);
-			                           
 			                        }
 			                    }
 			                }
