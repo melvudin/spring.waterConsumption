@@ -44,6 +44,14 @@ public class LoginController {
 		}
 
 	}
+	
+	@RequestMapping(value = "/map", method = RequestMethod.GET)
+	public String map(ModelMap model, HttpSession sessionObj) {
+
+		
+			return "map";
+		
+	}
 
 	@RequestMapping(value = "/success", method = RequestMethod.GET)
 	public String success(ModelMap model, HttpSession sessionObj) {
@@ -69,6 +77,15 @@ public class LoginController {
 		return "error";
 	}
 
+	@RequestMapping(value = "/getuserdata", method = RequestMethod.POST)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public ResponseEntity<Object> getUserData(@RequestBody User user, HttpSession sessionObj) {
+		Map<String, Object> result = loginService.getUserData(user);
+		sessionObj.setAttribute("zip", result.get("zipcode"));
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public ResponseEntity<Object> getUser(@RequestBody User user, HttpSession sessionObj) {
